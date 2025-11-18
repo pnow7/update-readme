@@ -1,0 +1,5 @@
+<svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="200" fill="#ffffff"/>
+  <text x="20" y="40" font-size="18" fill="#333">GitHub Auto Profile</text>
+  <text x="20" y="80" font-size="16" fill="#555">Generated Daily</text>
+</svg>
