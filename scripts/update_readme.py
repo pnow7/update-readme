@@ -1,81 +1,45 @@
 import os
-import requests
 from datetime import datetime
-from dateutil import relativedelta
 
-ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-USER_NAME = os.environ["USER_NAME"]
+TEMPLATE_PATH = "templates/profile_template.txt"
+ASCII_PATH = "templates/ascii_pnow7.txt"
+README_PATH = "../pnow7/README.md"
 
-headers = {
-    "Authorization": f"token {ACCESS_TOKEN}",
-    "Accept": "application/vnd.github+json"
-}
+def load_ascii():
+    with open(ASCII_PATH, "r", encoding="utf-8") as f:
+        return f.read()
 
-def get_user():
-    url = f"https://api.github.com/users/{USER_NAME}"
-    return requests.get(url, headers=headers).json()
+def load_template():
+    with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
+        return f.read()
 
-def get_repos():
-    repos = []
-    page = 1
-    while True:
-        url = f"https://api.github.com/users/{USER_NAME}/repos?per_page=100&page={page}"
-        data = requests.get(url, headers=headers).json()
-        if not data:
-            break
-        repos.extend(data)
-        page += 1
-    return repos
+def write_readme(content):
+    with open(README_PATH, "w", encoding="utf-8") as f:
+        f.write(content)
 
-def get_stars(repos):
-    return sum(r.get("stargazers_count", 0) for r in repos)
+def get_github_stats():
+    repos = os.getenv("REPO_COUNT", "...")
+    stars = os.getenv("STAR_COUNT", "...")
+    commits = os.getenv("COMMIT_COUNT", "...")
 
-def get_loc(repos):
-    total = 0
-    for repo in repos:
-        if not repo["fork"]:
-            url = f"https://api.github.com/repos/{USER_NAME}/{repo['name']}/languages"
-            lang_data = requests.get(url, headers=headers).json()
-            total += sum(lang_data.values())
-    return total
+    return repos, stars, commits
 
-def format_uptime(created_at):
-    created = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ")
-    now = datetime.utcnow()
-    diff = relativedelta.relativedelta(now, created)
-    return f"{diff.years}y {diff.months}m {diff.days}d"
+def main():
+    ascii_art = load_ascii()
+    template = load_template()
+    repos, stars, commits = get_github_stats()
 
-def update_readme():
-    user = get_user()
-    repos = get_repos()
-
-    stars = get_stars(repos)
-    loc = get_loc(repos)
-    uptime = format_uptime(user["created_at"])
-
-    languages = set()
-    for repo in repos:
-        if repo["language"]:
-            languages.add(repo["language"])
-
-    # Load template
-    with open("templates/profile_template.txt", "r", encoding="utf-8") as f:
-        template = f.read()
-
-    profile_text = template.format(
-        USER=USER_NAME,
-        OS="Windows 11",
-        UPTIME=uptime,
-        REPOS=user["public_repos"],
-        FOLLOWERS=user["followers"],
-        STARS=stars,
-        LOC=f"{loc:,}",
-        LANGUAGES=", ".join(languages)
+    # 템플릿 치환
+    output = (
+        template
+        .replace("{{ASCII_ART}}", ascii_art)
+        .replace("{{REPOS}}", repos)
+        .replace("{{STARS}}", stars)
+        .replace("{{COMMITS}}", commits)
     )
 
-    # Write to README
-    with open("README.md", "w", encoding="utf-8") as f:
-        f.write(profile_text)
+    write_readme(output)
+    print("README updated successfully.")
 
 if __name__ == "__main__":
-    update_readme()
+    main()

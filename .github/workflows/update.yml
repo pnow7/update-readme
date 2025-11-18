@@ -6,31 +6,58 @@ on:
   workflow_dispatch:
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout update-readme repo
         uses: actions/checkout@v4
+
+      - name: Checkout pnow7/pnow7 profile repo
+        uses: actions/checkout@v4
+        with:
+          repository: pnow7/pnow7
+          path: profile_repo
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: 3.10
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install requests
 
-      - name: Run script
+      - name: Fetch GitHub Stats
+        id: stats
+        run: |
+          REPOS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/users/${{ secrets.USER_NAME }} | jq '.public_repos')
+          STARS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/users/${{ secrets.USER_NAME }}/starred | jq 'length')
+          COMMITS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" "https://api.github.com/search/commits?q=author:${{ secrets.USER_NAME }}" -H "Accept: application/vnd.github.cloak-preview" | jq '.total_count')
+
+          echo "repos=$REPOS" >> $GITHUB_OUTPUT
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+
+      - name: Update README
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          USER_NAME: ${{ secrets.USER_NAME }}
-        run: python scripts/update_readme.py
+          REPO_COUNT: ${{ steps.stats.outputs.repos }}
+          STAR_COUNT: ${{ steps.stats.outputs.stars }}
+          COMMIT_COUNT: ${{ steps.stats.outputs.commits }}
+        run: |
+          python scripts/update_readme.py
 
-      - name: Commit and push
+      - name: Commit changes
+        working-directory: profile_repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Update README" || echo "no changes"
-          git push
+
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto update README (daily stats)"
+            git push origin main
+          fi
