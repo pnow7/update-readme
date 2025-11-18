@@ -40,7 +40,7 @@ jobs:
           echo "stars=$STARS" >> $GITHUB_OUTPUT
           echo "commits=$COMMITS" >> $GITHUB_OUTPUT
 
-      - name: Update README
+      - name: Update SVG
         env:
           REPO_COUNT: ${{ steps.stats.outputs.repos }}
           STAR_COUNT: ${{ steps.stats.outputs.stars }}
@@ -54,10 +54,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add README.md
+          git add profile.svg
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto update README (daily stats)"
+            git commit -m "Auto update profile.svg (daily stats)"
             git push origin main
           fi
