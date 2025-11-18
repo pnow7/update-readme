@@ -3,7 +3,7 @@ from datetime import datetime
 
 TEMPLATE_PATH = "templates/profile_template.txt"
 ASCII_PATH = "templates/ascii_pnow7.txt"
-README_PATH = "../README.md"
+README_PATH = "../pnow7/README.md"
 
 def load_ascii():
     with open(ASCII_PATH, "r", encoding="utf-8") as f:
