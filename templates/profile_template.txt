@@ -1,27 +1,15 @@
+<p align="center">
+
+<pre>
 {{ASCII_ART}}
+</pre>
 
-pnow7  -------------------------------------------------------------
+</p>
 
-OS: .......................... Windows 11, Android 14
-Uptime: ...................... 25 years
-Host: ........................ Republic of Korea
-Kernel: ...................... Software Developer / AI Integration
-IDE: ........................ IntelliJ IDEA, VSCode, PyCharm
-
-Languages.Programming: ...... Java, Spring Boot, Python, JavaScript
-Languages.Computer: ......... React, FastAPI, MySQL, Docker, Linux
-Languages.Real: ............. Korean, English
-
-Hobbies.Software: ........... AI Image/Model Tweaking, Game Dev (LibGDX)
-Hobbies.Hardware: ........... Custom PCs, Undervolting, Optimization
-
-Contact -------------------------------------------------------------
-Email.Personal: ............. (your.email@example.com)
-LinkedIn: .................... (Optional)
-Discord: ..................... (Optional)
-
-GitHub Stats ---------------------------------------------------------
-Repos: ....................... {{REPOS}}
-Stars: ....................... {{STARS}}
-Commits: ..................... {{COMMITS}}
-Lines of Code on GitHub: ..... {{LOC_ADD}}+ , {{LOC_DEL}}-
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pnow7/update-readme/main/templates/dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/pnow7/update-readme/main/templates/light.svg" />
+    <img alt="GitHub Stats" src="https://raw.githubusercontent.com/pnow7/update-readme/main/templates/light.svg" />
+  </picture>
+</p>
