@@ -34,7 +34,11 @@ jobs:
         run: |
           REPOS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/users/${{ secrets.USER_NAME }} | jq '.public_repos')
           STARS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/users/${{ secrets.USER_NAME }}/starred | jq 'length')
-          COMMITS=$(curl -s -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" "https://api.github.com/search/commits?q=author:${{ secrets.USER_NAME }}" -H "Accept: application/vnd.github.cloak-preview" | jq '.total_count')
+          COMMITS=$(curl -s \
+            -H "Authorization: bearer ${{ secrets.ACCESS_TOKEN }}" \
+            -X POST https://api.github.com/graphql \
+            -d "{\"query\": \"query { user(login: \\\"${{ secrets.USER_NAME }}\\\") { contributionsCollection { contributionCalendar { totalContributions } } } }\"}" \
+            | jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
 
           echo "repos=$REPOS" >> $GITHUB_OUTPUT
           echo "stars=$STARS" >> $GITHUB_OUTPUT
