@@ -1,10 +1,40 @@
-<p align="center">
-
-<pre>
+<table>
+  <tr>
+    <td>
+      <pre>
 {{ASCII_ART}}
-</pre>
+      </pre>
+    </td>
+    <td>
 
-</p>
+pnow7 -------------------------------------------------------------
+
+OS: .......................... Windows 11, Android 14
+Uptime: ...................... 25 years
+Host: ........................ Republic of Korea
+Kernel: ...................... Software Developer / AI Integration
+IDE: ........................ IntelliJ IDEA, VSCode, PyCharm
+
+Languages.Programming: ...... Java, Spring Boot, Python, JavaScript
+Languages.Computer: ......... React, FastAPI, MySQL, Docker, Linux
+Languages.Real: ............. Korean, English
+
+Hobbies.Software: ........... AI Image/Model Tweaking, Game Dev (LibGDX)
+Hobbies.Hardware: ........... Custom PCs, Undervolting, Optimization
+
+Contact -----------------------------------------------------------
+Email.Personal: ............. your.email@example.com
+Discord: ..................... (optional)
+LinkedIn: .................... (optional)
+
+GitHub Stats ------------------------------------------------------
+Repos: ....................... {{REPOS}}
+Stars: ....................... {{STARS}}
+Commits: ..................... {{COMMITS}}
+
+    </td>
+  </tr>
+</table>
 
 <p align="center">
   <picture>
