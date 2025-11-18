@@ -1,12 +1,14 @@
-<table>
-  <tr>
-    <td>
-      <pre>
-{{ASCII_ART}}
-      </pre>
-    </td>
-    <td>
+<p align="left">
 
+<pre style="font-size: 14px; line-height: 12px;">
+{{ASCII_ART}}
+</pre>
+
+</p>
+
+<p align="left">
+
+```
 pnow7 -------------------------------------------------------------
 
 OS: .......................... Windows 11, Android 14
@@ -31,10 +33,9 @@ GitHub Stats ------------------------------------------------------
 Repos: ....................... {{REPOS}}
 Stars: ....................... {{STARS}}
 Commits: ..................... {{COMMITS}}
+```
 
-    </td>
-  </tr>
-</table>
+</p>
 
 <p align="center">
   <picture>
